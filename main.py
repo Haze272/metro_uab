@@ -12,4 +12,20 @@ if __name__ == '__main__':
     path1 = Path(1)
     path1.add_route(2)
 
+    g = map_.connections.get(1)[2]*10
+    h = euclidean_dist(
+        [map_.stations.get(1)['x'], map_.stations.get(1)['y']],
+        [map_.stations.get(2)['x'], map_.stations.get(2)['y']]
+    )
+
+    path1.update_g(g)
+    path1.update_h(h)
+    path1.update_f()
+
+    print(map_.connections.get(1)[2]*10)
+    print(euclidean_dist(
+        [map_.stations.get(1)['x'], map_.stations.get(1)['y']],
+        [map_.stations.get(2)['x'], map_.stations.get(2)['y']]
+    ))
+
     print(path1.route)
