@@ -25,7 +25,13 @@ def expand(path, map):
         Returns:
             path_list (list): List of paths that are connected to the given path.
     """
-    pass
+    path_list = []
+    for path_ in map.connections.get(path.last).keys():
+        temp_path = path.route.copy()
+        temp_path.append(path_)
+        path_list.append(temp_path)
+
+    return path_list
 
 
 def remove_cycles(path_list):
@@ -174,7 +180,11 @@ def update_f(expand_paths):
          Returns:
              expand_paths (LIST of Path Class): Expanded paths with updated costs
     """
-    pass
+    for i in range(len(expand_paths)):
+        expand_paths[i].update_f()
+
+    return expand_paths
+
 
 
 def remove_redundant_paths(expand_paths, list_of_path, visited_stations_cost):
