@@ -43,7 +43,15 @@ def remove_cycles(path_list):
         Returns:
             path_list (list): Expanded paths without cycles.
     """
-    pass
+    for path in path_list:
+        path_set = set(path)
+
+        if len(path) != len(path_set):
+            path_list.remove(path)
+
+    return path_list
+
+
 
 
 def insert_depth_first_search(expand_paths, list_of_path):

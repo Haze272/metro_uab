@@ -1,4 +1,4 @@
-from SearchAlgorithm import expand
+from SearchAlgorithm import expand, remove_cycles
 from utils import *
 
 
@@ -44,5 +44,7 @@ if __name__ == '__main__':
     path1.update_f()
 
     print(expand(path1, map_))
+
+    print(remove_cycles([[14,8,12,8], [14,8,12,11], [14,8,12,14]]))
 
 
