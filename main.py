@@ -1,4 +1,4 @@
-from SearchAlgorithm import expand, remove_cycles
+from SearchAlgorithm import *
 from utils import *
 
 
@@ -43,8 +43,14 @@ if __name__ == '__main__':
     path1.update_h(h)
     path1.update_f()
 
-    print(expand(path1, map_))
+    list_of_path = []
 
-    print(remove_cycles([[14,8,12,8], [14,8,12,11], [14,8,12,14]]))
+    # print(insert_depth_first_search(remove_cycles(expand(path1, map_)), list_of_path))
+    #
+    print(depth_first_search(4, 6, map_).route)
+    # print(remove_cycles(expand(Path(2), map_)))
+    # print(map_.connections.get(1))
+    #print(depth_first_search(4, 7, map_))
+    #print(insert_depth_first_search(Path(remove_cycles(expand(Path(4), map_))), [Path(4)]))
 
 

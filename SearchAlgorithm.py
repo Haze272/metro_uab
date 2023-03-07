@@ -64,7 +64,10 @@ def insert_depth_first_search(expand_paths, list_of_path):
         Returns:
             list_of_path (LIST of Path Class): List of Paths where Expanded Path is inserted
     """
-    pass
+    for expanded_path in expand_paths.route:
+        list_of_path.insert(0, Path(expanded_path))
+
+    return list_of_path
 
 
 def depth_first_search(origin_id, destination_id, map):
@@ -78,7 +81,21 @@ def depth_first_search(origin_id, destination_id, map):
         Returns:
             list_of_path[0] (Path Class): the route that goes from origin_id to destination_id
     """
-    pass
+    list_of_path = [Path(origin_id)]
+
+    # TODO переделать Path сдвигать
+
+
+    # while list_of_path[0].last != destination_id or list_of_path is not None:
+    #     insert_depth_first_search(Path(remove_cycles(expand(Path(list_of_path[0].last), map))), list_of_path)
+    insert_depth_first_search(Path(remove_cycles(expand(Path(list_of_path[0].last), map))), list_of_path)
+
+    if list_of_path is not None:
+        return list_of_path[0]
+    else:
+        return "NO SOLUTION"
+
+
 
 
 def insert_breadth_first_search(expand_paths, list_of_path):
