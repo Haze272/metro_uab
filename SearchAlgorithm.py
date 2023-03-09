@@ -35,8 +35,6 @@ def expand(path, map):
     return path_list
 
 
-
-
 def remove_cycles(path_list):
     """
      It removes from path_list the set of paths that include some cycles in their path.
@@ -81,16 +79,16 @@ def depth_first_search(origin_id, destination_id, map):
     """
     list_of_path = [Path(origin_id)]
 
-    while list_of_path != [] and list_of_path[0].last != destination_id:
+    while list_of_path is not None and list_of_path[0].last != destination_id:
         H = list_of_path[0]
         E = expand(H, map)
         R = remove_cycles(E)
         list_of_path = insert_depth_first_search(R, list_of_path)
 
-    if len(list_of_path) > 0:
+    if list_of_path is not None:
         return list_of_path[0]
     else:
-        return []
+        return "No Solution Exists!"
 
 
 def insert_breadth_first_search(expand_paths, list_of_path):
