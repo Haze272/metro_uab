@@ -101,7 +101,7 @@ def insert_breadth_first_search(expand_paths, list_of_path):
            Returns:
                list_of_path (LIST of Path Class): List of Paths where Expanded Path is inserted
     """
-    pass
+    return list_of_path[1:] + expand_paths
 
 
 def breadth_first_search(origin_id, destination_id, map):
@@ -115,7 +115,18 @@ def breadth_first_search(origin_id, destination_id, map):
         Returns:
             list_of_path[0] (Path Class): The route that goes from origin_id to destination_id
     """
-    pass
+    list_of_path = [Path(origin_id)]
+
+    while list_of_path is not None and list_of_path[0].last != destination_id:
+        H = list_of_path[0]
+        E = expand(H, map)
+        R = remove_cycles(E)
+        list_of_path = insert_breadth_first_search(R, list_of_path)
+
+    if list_of_path is not None:
+        return list_of_path[0]
+    else:
+        return "No Solution Exists!"
 
 
 def calculate_cost(expand_paths, map, type_preference=0):
@@ -244,30 +255,20 @@ def coord2station(coord, map):
         Returns:
             possible_origins (list): List of the Indexes of stations, which corresponds to the closest station
     """
+    stations = map.stations.items()
+    min_dist = INF
     possible_origins = []
-    result = []
 
-    stations = map.stations
-    for i in stations:
-        d = euclidean_dist(coord, [stations.get(i).get('x'), stations.get(i).get('y')])
+    for stationId, stationInfo in stations:
+        distance = euclidean_dist(coord, [stationInfo.get('x'), stationInfo.get('y')])
 
-        index = len(possible_origins)
-        # Searching for the position
-        for i in range(len(possible_origins)):
-            if possible_origins[i] > d:
-                index = i
-                break
+        if distance < min_dist:
+            min_dist = distance
+            possible_origins = [stationId]
+        elif distance == min_dist:
+            possible_origins += [stationId]
 
-        # Inserting d in the list
-        if index == len(possible_origins):
-            possible_origins = possible_origins[:index] + [d]
-            result.append(i)
-        else:
-            possible_origins = possible_origins[:index] + [d] + possible_origins[index:]
-            result.append(i)
-
-
-    return result
+    return possible_origins
 
 
 def Astar(origin_id, destination_id, map, type_preference=0):
