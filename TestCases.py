@@ -18,7 +18,7 @@ def print_paths(new_paths, list_of_path_removed):
 
 
 class TestCases(unittest.TestCase):
-    ROOT_FOLDER = '../CityInformation/Lyon_smallCity/'
+    ROOT_FOLDER = './'
 
     def setUp(self):
         map_ = read_station_information(os.path.join(self.ROOT_FOLDER, 'Stations.txt'))

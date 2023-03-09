@@ -1,4 +1,5 @@
 from SearchAlgorithm import *
+from TestCases import *
 from utils import *
 
 
@@ -50,7 +51,15 @@ if __name__ == '__main__':
     print(depth_first_search(4, 6, map_).route)
     # print(remove_cycles(expand(Path(2), map_)))
     # print(map_.connections.get(1))
-    #print(depth_first_search(4, 7, map_))
-    #print(insert_depth_first_search(Path(remove_cycles(expand(Path(4), map_))), [Path(4)]))
+    #print(coord2station([100, 200], map_))
+
+
+    #print(insert_depth_first_search(remove_cycles(expand(Path(4), map_)), [Path(4)]))
+
+    # testCases = TestCases()
+    # testCases.setUp()
+    # testCases.test_Expand() passed
+    # testCases.test_RemoveCycles() passed
+
 
 

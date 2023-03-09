@@ -2,6 +2,7 @@
 #
 __authors__ = 'TO_BE_FILLED'
 __group__ = 'TO_BE_FILLED'
+
 # _________________________________________________________________________________________
 # Intel.ligencia Artificial
 # Curs 2022 - 2023
@@ -23,15 +24,17 @@ def expand(path, map):
             path (object of Path class): Specific path to be expanded
             map (object of Map class):: All the information needed to expand the node
         Returns:
-            path_list (list): List of paths that are connected to the given path.
+            path_list (list of Path classes)
     """
     path_list = []
     for path_ in map.connections.get(path.last).keys():
-        temp_path = path.route.copy()
-        temp_path.append(path_)
+        temp_path = Path(path.route.copy())
+        temp_path.add_route(path_)
         path_list.append(temp_path)
 
     return path_list
+
+
 
 
 def remove_cycles(path_list):
@@ -43,15 +46,13 @@ def remove_cycles(path_list):
         Returns:
             path_list (list): Expanded paths without cycles.
     """
+    result = path_list.copy()
+
     for path in path_list:
-        path_set = set(path)
+        if len(path.route) != len(set(path.route)):
+            result.remove(path)
 
-        if len(path) != len(path_set):
-            path_list.remove(path)
-
-    return path_list
-
-
+    return result
 
 
 def insert_depth_first_search(expand_paths, list_of_path):
@@ -64,10 +65,7 @@ def insert_depth_first_search(expand_paths, list_of_path):
         Returns:
             list_of_path (LIST of Path Class): List of Paths where Expanded Path is inserted
     """
-    for expanded_path in expand_paths.route:
-        list_of_path.insert(0, Path(expanded_path))
-
-    return list_of_path
+    return expand_paths + list_of_path[1:]
 
 
 def depth_first_search(origin_id, destination_id, map):
@@ -83,19 +81,16 @@ def depth_first_search(origin_id, destination_id, map):
     """
     list_of_path = [Path(origin_id)]
 
-    # TODO переделать Path сдвигать
+    while list_of_path != [] and list_of_path[0].last != destination_id:
+        H = list_of_path[0]
+        E = expand(H, map)
+        R = remove_cycles(E)
+        list_of_path = insert_depth_first_search(R, list_of_path)
 
-
-    # while list_of_path[0].last != destination_id or list_of_path is not None:
-    #     insert_depth_first_search(Path(remove_cycles(expand(Path(list_of_path[0].last), map))), list_of_path)
-    insert_depth_first_search(Path(remove_cycles(expand(Path(list_of_path[0].last), map))), list_of_path)
-
-    if list_of_path is not None:
+    if len(list_of_path) > 0:
         return list_of_path[0]
     else:
-        return "NO SOLUTION"
-
-
+        return []
 
 
 def insert_breadth_first_search(expand_paths, list_of_path):
@@ -211,7 +206,6 @@ def update_f(expand_paths):
     return expand_paths
 
 
-
 def remove_redundant_paths(expand_paths, list_of_path, visited_stations_cost):
     """
       It removes the Redundant Paths. They are not optimal solution!
@@ -252,7 +246,30 @@ def coord2station(coord, map):
         Returns:
             possible_origins (list): List of the Indexes of stations, which corresponds to the closest station
     """
-    pass
+    possible_origins = []
+    result = []
+
+    stations = map.stations
+    for i in stations:
+        d = euclidean_dist(coord, [stations.get(i).get('x'), stations.get(i).get('y')])
+
+        index = len(possible_origins)
+        # Searching for the position
+        for i in range(len(possible_origins)):
+            if possible_origins[i] > d:
+                index = i
+                break
+
+        # Inserting d in the list
+        if index == len(possible_origins):
+            possible_origins = possible_origins[:index] + [d]
+            result.append(i)
+        else:
+            possible_origins = possible_origins[:index] + [d] + possible_origins[index:]
+            result.append(i)
+
+
+    return result
 
 
 def Astar(origin_id, destination_id, map, type_preference=0):
